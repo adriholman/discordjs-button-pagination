@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryzyx/discordjs-button-pagination.git"
+    "url": "https://github.com/adriholman/discordjs-button-pagination"
   },
   "keywords": [
     "Discord",
@@ -19,12 +19,12 @@
     "discordjs",
     "discord.js"
   ],
-  "author": "Ryzyx",
+  "author": "adriholman",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ryzyx/discordjs-button-pagination/issues"
+    "url": "https://github.com/adriholman/discordjs-button-pagination/issues"
   },
-  "homepage": "https://github.com/ryzyx/discordjs-button-pagination#readme",
+  "homepage": "https://github.com/adriholman/discordjs-button-pagination#readme",
   "dependencies": {
     "discord.js": "^13.0.1"
   }
