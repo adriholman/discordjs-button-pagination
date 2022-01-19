@@ -1,9 +1,11 @@
+### This has been modified for my personal use, you are free to do it too
+
 [![discordjs-pagination](https://user-images.githubusercontent.com/57099786/126899921-eb1e0728-ab64-4d28-a59c-835662957a8a.png)](https://npmjs.com/package/discordjs-button-pagination)
 
 <div align="center">
   <p>
-    <a href="https://npmjs.com/package/discordjs-button-pagination
-/"><img src="https://nodei.co/npm/discordjs-button-pagination.png?downloads=true&stars=true" alt="NPM info" /></a>
+    <a href="https://www.npmjs.com/package/@adriholman/discordjs-button-pagination
+/"><img src="https://nodei.co/npm/@adriholman/discordjs-button-pagination.png?downloads=true&stars=true" alt="NPM info" /></a>
   </p>
 </div>
 
@@ -103,5 +105,5 @@ Disabled Buttons after collector end
 
 
 
-### For any issues or suggestions, kindly open an issue/pull request on the [**GitHub Repository**](https://github.com/ryzyx/discordjs-button-pagination)
+### For any issues or suggestions, kindly open an issue/pull request on the [**GitHub Repository**](https://github.com/adriholman/discordjs-button-pagination)
 
