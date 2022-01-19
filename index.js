@@ -20,7 +20,7 @@ const paginationEmbed = async (
   buttonList,
   timeout = 120000
 ) => {
-  if (typeof Message === interaction) {
+  if (interaction instanceof Message) {
     if (!interaction && !interaction.channel) throw new Error("Channel is inaccessible.");
   }
   if (!pages) throw new Error("Pages are not given.");
@@ -35,21 +35,19 @@ const paginationEmbed = async (
 
   const row = new MessageActionRow().addComponents(buttonList);
 
-  curPage = [];
-
-  if (typeof Interaction === interaction) {
+  if (interaction instanceof Interaction) {
     //has the interaction already been deferred? If not, defer the reply.
     if (interaction.deferred == false) {
       await interaction.deferReply();
     }
 
-    curPage = await interaction.editReply({
+    var curPage = await interaction.editReply({
       embeds: [pages[page]],
       components: [row],
       fetchReply: true,
     });
-  } else {
-    curPage = await interaction.reply({
+  } else if (interaction instanceof Message) {
+    var curPage = await interaction.channel.send({
       embeds: [pages[page]],
       components: [row],
     });
