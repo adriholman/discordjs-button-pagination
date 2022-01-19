@@ -3,11 +3,12 @@ const {
   Message,
   MessageEmbed,
   MessageButton,
+  Interaction,
 } = require("discord.js");
 
 /**
  * Creates a pagination embed
- * @param {Interaction} interaction
+ * @param {Interaction | Message} interaction
  * @param {MessageEmbed[]} pages
  * @param {MessageButton[]} buttonList
  * @param {number} timeout
@@ -19,6 +20,9 @@ const paginationEmbed = async (
   buttonList,
   timeout = 120000
 ) => {
+  if (typeof Message === interaction) {
+    if (!interaction && !interaction.channel) throw new Error("Channel is inaccessible.");
+  }
   if (!pages) throw new Error("Pages are not given.");
   if (!buttonList) throw new Error("Buttons are not given.");
   if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK")
@@ -31,16 +35,25 @@ const paginationEmbed = async (
 
   const row = new MessageActionRow().addComponents(buttonList);
 
-  //has the interaction already been deferred? If not, defer the reply.
-  if (interaction.deferred == false) {
-    await interaction.deferReply();
-  }
+  curPage = [];
 
-  const curPage = await interaction.editReply({
-    embeds: [pages[page]],
-    components: [row],
-    fetchReply: true,
-  });
+  if (typeof Interaction === interaction) {
+    //has the interaction already been deferred? If not, defer the reply.
+    if (interaction.deferred == false) {
+      await interaction.deferReply();
+    }
+
+    curPage = await interaction.editReply({
+      embeds: [pages[page]],
+      components: [row],
+      fetchReply: true,
+    });
+  } else {
+    curPage = await interaction.reply({
+      embeds: [pages[page]],
+      components: [row],
+    });
+  }
 
   const filter = (i) =>
     i.customId === buttonList[0].customId ||
