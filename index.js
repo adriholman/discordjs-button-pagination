@@ -47,7 +47,7 @@ const paginationEmbed = async (
       fetchReply: true,
     });
   } else if (interaction instanceof Message) {
-    var curPage = await interaction.channel.send({
+    var curPage = await interaction.reply({
       embeds: [pages[page]],
       components: [row],
     });
