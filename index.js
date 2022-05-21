@@ -12,13 +12,15 @@ const {
  * @param {MessageEmbed[]} pages
  * @param {MessageButton[]} buttonList
  * @param {number} timeout
+ * @param {string} messageFooter
  * @returns
  */
 const paginationEmbed = async (
   interaction,
   pages,
   buttonList,
-  timeout = 120000
+  timeout = 120000,
+  messageFooter,
 ) => {
   if (interaction instanceof Message) {
     if (!interaction && !interaction.channel) throw new Error("Channel is inaccessible.");
@@ -40,7 +42,7 @@ const paginationEmbed = async (
     if (interaction.deferred == false) {
       await interaction.deferReply();
     }
-
+    pages[page].footer = {text:`[Page ${page + 1} / ${pages.length}] ${messageFooter}`};
     var curPage = await interaction.editReply({
       embeds: [pages[page]],
       components: [row],
@@ -74,6 +76,7 @@ const paginationEmbed = async (
         break;
     }
     await i.deferUpdate();
+    pages[page].footer = {text:`[Page ${page + 1} / ${pages.length}] ${messageFooter}`};
     await i.editReply({
       embeds: [pages[page]],
       components: [row],
@@ -82,11 +85,12 @@ const paginationEmbed = async (
   });
 
   collector.on("end", (_, reason) => {
-    if (reason !== "messageDelete") {
+    if (reason !== "messageDelete" && reason !== "guildDelete") {
       const disabledRow = new MessageActionRow().addComponents(
         buttonList[0].setDisabled(true),
         buttonList[1].setDisabled(true)
       );
+      pages[page].footer = {text:`[Page ${page + 1} / ${pages.length}] ${messageFooter}`};
       curPage.edit({
         embeds: [pages[page]],
         components: [disabledRow],
