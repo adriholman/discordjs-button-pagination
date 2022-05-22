@@ -63,9 +63,9 @@ buttonList = [
 
 // Call the paginationEmbed method, first three arguments are required
 // timeout is the time till the reaction collectors are active, after this you can't change pages (in ms), defaults to 120000
-paginationEmbed(interaction, pages, buttonList, timeout);
+paginationEmbed(interaction, pages, buttonList, timeout, "myfooter");
 //or for message
-paginationEmbed(message, pages, buttonList, timeout);
+paginationEmbed(message, pages, buttonList, timeout, "myfooter");
 // There you go, now you have paged embeds
 ```
 
