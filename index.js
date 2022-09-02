@@ -8,11 +8,12 @@ const {
 
 /**
  * Creates a pagination embed
- * @param {Interaction | Message} interaction
+ * @param {Interaction} interaction
  * @param {MessageEmbed[]} pages
  * @param {MessageButton[]} buttonList
  * @param {number} timeout
  * @param {string} messageFooter
+ * @param {boolean} ephemeral
  * @returns
  */
 const paginationEmbed = async (
@@ -21,10 +22,8 @@ const paginationEmbed = async (
   buttonList,
   timeout = 120000,
   messageFooter,
+  ephemeral = true,
 ) => {
-  if (interaction instanceof Message) {
-    if (!interaction && !interaction.channel) throw new Error("Channel is inaccessible.");
-  }
   if (!pages) throw new Error("Pages are not given.");
   if (!buttonList) throw new Error("Buttons are not given.");
   if (buttonList[0].style === "LINK" || buttonList[1].style === "LINK")
@@ -37,23 +36,18 @@ const paginationEmbed = async (
 
   const row = new MessageActionRow().addComponents(buttonList);
 
-  if (interaction instanceof Interaction) {
-    //has the interaction already been deferred? If not, defer the reply.
-    if (interaction.deferred == false) {
-      await interaction.deferReply();
-    }
-    pages[page].footer = {text:`[Page ${page + 1} / ${pages.length}] ${messageFooter}`};
-    var curPage = await interaction.editReply({
-      embeds: [pages[page]],
-      components: [row],
-      fetchReply: true,
-    });
-  } else if (interaction instanceof Message) {
-    var curPage = await interaction.reply({
-      embeds: [pages[page]],
-      components: [row],
-    });
+  //has the interaction already been deferred? If not, defer the reply.
+  if (interaction.deferred == false) {
+    await interaction.deferReply({ ephemeral: ephemeral });
   }
+
+  pages[page].footer = { text: `[Page ${page + 1} / ${pages.length}] ${messageFooter}` };
+  var curPage = await interaction.editReply({
+    embeds: [pages[page]],
+    components: [row],
+    fetchReply: true,
+    ephemeral: ephemeral,
+  });
 
   const filter = (i) =>
     i.customId === buttonList[0].customId ||
@@ -76,10 +70,11 @@ const paginationEmbed = async (
         break;
     }
     await i.deferUpdate();
-    pages[page].footer = {text:`[Page ${page + 1} / ${pages.length}] ${messageFooter}`};
+    pages[page].footer = { text: `[Page ${page + 1} / ${pages.length}] ${messageFooter}` };
     await i.editReply({
       embeds: [pages[page]],
       components: [row],
+      ephemeral: ephemeral,
     });
     collector.resetTimer();
   });
@@ -90,10 +85,11 @@ const paginationEmbed = async (
         buttonList[0].setDisabled(true),
         buttonList[1].setDisabled(true)
       );
-      pages[page].footer = {text:`[Page ${page + 1} / ${pages.length}] ${messageFooter}`};
+      pages[page].footer = { text: `[Page ${page + 1} / ${pages.length}] ${messageFooter}` };
       curPage.edit({
         embeds: [pages[page]],
         components: [disabledRow],
+        ephemeral: ephemeral,
       });
     }
   });

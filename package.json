@@ -1,6 +1,6 @@
 {
   "name": "@adriholman/discordjs-button-pagination",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "A simple package for pagination using buttons introduced in discord.js v13.",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/adriholman/discordjs-button-pagination#readme",
   "dependencies": {
-    "discord.js": "^13.0.1"
+    "discord.js": "^13.10.2"
   }
 }
